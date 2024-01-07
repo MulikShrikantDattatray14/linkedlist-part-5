@@ -1,0 +1,115 @@
+Problem Statement: Given a doubly linked list of size ‘N’ consisting of positive integers, your task is to reverse it and return the head of the modified doubly linked list.
+ Examples
+ Example 1: Input Format:
+DLL: 1 <-> 2 <-> 3 <-> 4
+Result: DLL: 4 <-> 3 <-> 2 <-> 1
+
+Brute Force Approach : 
+
+Algorithm / Intuition :
+
+A brute-force approach involves replacing data in a doubly linked list. First, we traverse the list and store node data in a stack. Then, in a second pass, we assign elements from the stack to nodes, ensuring a reverse order replacement since stacks follow the Last-In-First-Out (LIFO) principle.
+
+CODE:
+
+// Define the Node class for a doubly linked list
+class Node {
+    constructor(data, next, back) {
+        this.data = data;
+        this.next = next;
+        this.back = back;
+    }
+}
+
+// Function to convert an array
+// to a doubly linked list
+function convertArr2DLL(arr) {
+    // Create the head node with 
+    // the first element of the array
+    let head = new Node(arr[0]);
+    // Initialize 'prev' to the head node
+    let prev = head;
+
+    for (let i = 1; i < arr.length; i++) {
+        // Create a new node with data from
+        // the array and set its 'back' pointer
+        // to the previous node
+        let temp = new Node(arr[i], null, prev);
+        // Update the 'next' pointer of the
+        // previous node to point to the new node
+        prev.next = temp;
+        // Move 'prev' to the newly created
+        // node for the next iteration
+        prev = temp;
+    }
+    // Return the head of the
+    // doubly linked list
+    return head;
+}
+
+// Function to print the elements
+// of the doubly linked list
+function print(head) {
+    while (head !== null) {
+        // Print the data in the current node
+        console.log(head.data + " ");
+        // Move to the next node
+        head = head.next;
+    }
+    console.log();
+}
+
+// Function to reverse the data of a doubly linked list
+function reverseDLL(head) {
+    if (head === null || head.next === null) {
+        // If the list is empty or has only one element, no need to reverse
+        return head;
+    }
+
+    let st = []; // Create a stack to store data temporarily
+    let temp = head;
+
+    // First iteration: Push data into the stack while traversing
+    while (temp !== null) {
+        st.push(temp.data);
+        temp = temp.next;
+    }
+
+    temp = head;
+
+    // Second iteration: Pop data from the stack and update the list's nodes
+    while (temp !== null) {
+        temp.data = st.pop();
+        temp = temp.next;
+    }
+
+    return head;
+}
+
+const arr = [12, 5, 6, 8, 4];
+// Convert the array to a doubly linked list
+let head = convertArr2DLL(arr);
+// Print the doubly linked list
+console.log("Doubly Linked List Initially:  ");
+print(head);
+
+console.log("Doubly Linked List After Reversing :");
+
+head = reverseDLL(head);
+print(head);
+
+Complexity Analysis :
+
+Time Complexity : O(2N) During the first traversal, each node’s value is pushed into the stack once, which requires O(N) time. Then, during the second iteration, the values are popped from the stack and used to update the nodes. Space Complexity : O(N) This is because we are using an external stack data structure. At the end of the first iteration, the stack will hold all N values of the doubly linked list therefore the space required for stack is directly proportional to the size of the input doubly linked list.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Optimal Approach : 
+Algorithm / Intuition :
+Reverse the Links in a Single Traversal :
+Instead of performing two separate traversals of the linked list and storing its node values in an external data structure, we can optimize our approach by directly modifying the links between the nodes within the doubly linked list in place,
+
+Complexity Analysis :
+Time Complexity : O(N) We only have to traverse the doubly linked list once, hence our time complexity is O(N).
+
+Space Complexity : O(1), as the reversal is done in place.
